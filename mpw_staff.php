@@ -100,8 +100,8 @@ if ( $the_query->have_posts() ) {
 			$thumb_url = get_the_post_thumbnail_url();
 		} 
 		$team_title = get_the_title();	
-		$position = get_field( "staff_postion" );
-		$email_address = get_field( "staff_email_address" );	
+		$position = get_field( "staff_postion", $data_id );
+		$email_address = get_field( "staff_email_address", $data_id );	
 
 		$cont .= '<div class="staff-member pure-u-1-1 pure-u-sm-1-4">';
 		$cont .= '<div class="staff-member-img-container"><img class="staff-member-img" src="'.$thumb_url.'" /></div>';
