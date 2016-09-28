@@ -1,18 +1,28 @@
-.team-member {
-  text-align: center;
-  position: relative;
-  padding: 0;
+.staff-member {
+    text-align: center;
 }
-
-img.team-member-img {
-  width: 100%;
+.staff-contact {
+    font-size: 32px;
+    font-size: 2rem;
+    color: #78a22f;
 }
-
+.staff-contact a {
+      color: #78a22f;
+}
+.staff-member-img {
+    border: 10px solid #fff;
+    border-radius: 50%;
+}
+.staff-member-name {
+    font-size: 32px;
+    font-size: 2rem;
+    font-weight: 400;
+    margin: 1rem auto;
+}
 
 .job-title {
-  margin-bottom: 20px;
-  display: block;
-  font-style: italic;
+    font-size: 24px;
+    font-size: 1.5rem;
 }
 
 
