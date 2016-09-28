@@ -77,10 +77,11 @@ function mpw_team_scripts() {
   		plugins_url( '/js/mpw-team.js', __FILE__),
   		array( 'jquery' ), '.1', true
   	);
+  	wp_enqueue_style( 'mpw-team-css', plugins_url( '/css/mpw-team.css', __FILE__) );
   }
   add_action( 'wp_enqueue_scripts', 'mpw_team_scripts' );
 function team_list_display ( $atts , $content = null ) {
-	wp_enqueue_script( 'mpw-team');
+	//wp_enqueue_script( 'mpw-team');
 	$args = array(
 	'post_type' => 'our_team',
 	'posts_per_page' => -1,
@@ -90,109 +91,25 @@ function team_list_display ( $atts , $content = null ) {
 $the_query = new WP_Query( $args );
 // The Loop
 if ( $the_query->have_posts() ) {
-	$cont .= '<style>.team-member {
-  text-align: center;
-  position: relative;
-  padding: 0;
-}
-.team-list .entry-title {
-  font-size: 22px;
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  background: rgba(199, 199, 199, 0.5);
-}
-img.team-member-img {
-  width: 100%;
-}
-.team-member-img-hover {
-	display: none;
-}
-.team-member.active .team-member-img {
-	display: none;
-}
-.team-member.active .team-member-img.team-member-img-hover {
-	display: inline;
-}
-.team-member:hover .team-member-img {
-	display: none;
-}
-.team-member a:focus {
-  color: transparent;
-}
-.team-member:hover .team-member-img.team-member-img-hover {
-	display: inline;
-}
-.team-member-name {
-  display: none;
-}
-.team-member:hover .team-member-name {
-  display: block;
-}
-
-.job-title {
-  margin-bottom: 20px;
-  display: block;
-  font-style: italic;
-}
-.team-member-img-container {
-	position: relative;
-	min-height: 200px;
-}
-.team-description {
-  position: relative;
-}
-.team-member-content {
-    margin-bottom: 15px;
-}
-.contact-link {
-	display: none;
-}
-@media screen and (max-width:600px) {
-	.team-description {
-		display: none;
-	}
-}
-</style><div id="team-area" class="row"><div class="col-xs-12 col-sm-7 team-list"><div class="row">';
+	$cont .= '<div id="staff-container" class="pure-g">';
 	while ( $the_query->have_posts() ) {
 		$the_query->the_post();
 		global $post;
 		$data_id = $post->ID;
-		$hover_image_id = get_post_meta($post->ID, 'team_hover_image', true);
-		$short_name = get_post_meta($post->ID, 'short_name', true);
-		$hover_image_url = wp_get_attachment_url($hover_image_id);
-		$thumb_id = get_post_meta($post->ID, 'team_main_image', true);
-		if ($thumb_id == '') {$thumb_id = get_post_thumbnail_id();}
-		$thumb_url = wp_get_attachment_url($thumb_id);
-		$team_title = get_the_title();
-		$comp_title = str_replace(" ","",$team_title);	
-		$position = get_post_meta($post->ID, 'position', true);	
-		if ($hover_image_url == ''){$hover_image_url = $thumb_url;}
-		$name_array = explode(" ", $team_title);
-		$first_name = $name_array[0];
-		if ($short_name == ''){	$short_name = $first_name; }
-		$team_content = do_shortcode(get_the_content($data_id));
-		$cont .= '<div class="team-member col-xs-12 col-sm-4"><div class="team-member-img-container"><a data-id="'.$data_id.'" id="'.$comp_title.'-link" class="team-member-link" title="'.$comp_title.'" href="'.get_the_permalink().'"><img class="team-member-img" src="'.$thumb_url.'" /><img class="team-member-img team-member-img-hover" src="'.$hover_image_url.'" /></a><h2 class="team-member-name entry-title">'.$team_title.'</h2></div><div class="team-member-info" id="'.$comp_title.'-info" style="display:none;"><span class="job-title">'.$position.'</span><div class="team-member-description">'.$team_content.'</div>
-		<div class="team-member-contact"><a href="#" data-featherlight="#mylightbox" data-shortname="' . $short_name . '" class="contact-link">Contact ' . $short_name . '</a></div></div></div>';
+		if ( has_post_thumbnail() ) { // check if the post has a Post Thumbnail assigned to it.
+			$thumb_url = get_the_post_thumbnail_url();
+		} 
+		$team_title = get_the_title();	
+		$position = get_field( "staff_postion" );
+		$email_address = get_field( "staff_email_address" );	
+
+		$cont .= '<div class="staff-member pure-u-1-1 pure-u-sm-1-4">';
+		$cont .= '<div class="staff-member-img-container"><img class="staff-member-img" src="'.$thumb_url.'" /></div>';
+		$cont .= '<div class="staff-contact"><i class="fa fa-envelope" aria-hidden="true"></i></div>';
+		$cont .= '<div class="staff-info"><h2 class="staff-member-name">'.$team_title.'</h2><span class="job-title">'.$position.'</span></div>';
+		$cont .= '</div>';
 	}
-	$cont .= '</div></div>
-	<div class="team-description-col col-xs-12 col-sm-5">
-	<div class="team-description">
-		<div class="ajax-loading-img"><img class= "loading-icon" src="'.get_stylesheet_directory_uri() . '/images/ajax-loader.gif" /></div>
-<article id="post-ID" class="post-class">
-	<header class="entry-header">
-		<h2 class="entry-title"></h2>
-<span class="job-title"></span>
-	</header>
-<div class="row">
-<main id="main-service" class="team-member-main col-xs-12" role="main"><div class="team-member-content">' . $content . '
-</div><a href="#" data-featherlight="#mylightbox" class="contact-link"></a></main><!--end main service-->
-	</div><!--end row-->
-</article><!--end post-article-->
-</div><!--end team description box-->
-</div><!--end team description col -->
-<div class="contact-holder" style="display:none;"><div id="mylightbox" style="background-color:#F4F4F4; padding:20px;">[contact-form-7 id="1639" title="team member contact"]</div></div>
-</div><!--end full team area -->';
+	$cont .= '</div>';
 
 } else {
 	// no posts found
