@@ -8,6 +8,17 @@
 }
 .staff-contact a {
       color: #78a22f;
+      font-size: 0;
+}
+.staff-contact a:vistied, .staff-contact a:active {
+        color: #78a22f;
+}
+.staff-contact a:hover {
+  color: #fff;
+}
+.staff-contact a .fa {
+    font-size: 32px;
+    font-size: 2rem;
 }
 .staff-member-img {
     border: 10px solid #fff;

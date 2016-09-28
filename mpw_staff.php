@@ -94,18 +94,19 @@ if ( $the_query->have_posts() ) {
 	$cont .= '<div id="staff-container" class="pure-g">';
 	while ( $the_query->have_posts() ) {
 		$the_query->the_post();
-		global $post;
-		$data_id = $post->ID;
+		//global $post;
+		//$data_id = $post->ID;
+		$po_id = get_the_id();
 		if ( has_post_thumbnail() ) { // check if the post has a Post Thumbnail assigned to it.
 			$thumb_url = get_the_post_thumbnail_url();
-		} 
+		}
 		$team_title = get_the_title();	
-		$position = get_field( "staff_postion", $data_id );
-		$email_address = get_field( "staff_email_address", $data_id );	
+		$position = get_post_meta( $po_id, "staff_position", true );
+		$email_address = get_post_meta( $po_id, "staff_email_address", true );	
 
 		$cont .= '<div class="staff-member pure-u-1-1 pure-u-sm-1-4">';
 		$cont .= '<div class="staff-member-img-container"><img class="staff-member-img" src="'.$thumb_url.'" /></div>';
-		$cont .= '<div class="staff-contact"><i class="fa fa-envelope" aria-hidden="true"></i></div>';
+		$cont .= '<div class="staff-contact"><a href="mailto:'.antispambot($email_address).'"><i class="fa fa-envelope" aria-hidden="true"></i>Email '.$team_title.'</a></div>';
 		$cont .= '<div class="staff-info"><h2 class="staff-member-name">'.$team_title.'</h2><span class="job-title">'.$position.'</span></div>';
 		$cont .= '</div>';
 	}
