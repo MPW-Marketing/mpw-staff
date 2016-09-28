@@ -77,7 +77,7 @@ function mpw_team_scripts() {
   		plugins_url( '/js/mpw-team.js', __FILE__),
   		array( 'jquery' ), '.1', true
   	);
-  	wp_enqueue_style( 'mpw-team-css', plugins_url( '/css/mpw-team.css', __FILE__) );
+  	wp_enqueue_style( 'mpw-staff-css', plugins_url( '/css/mpw-staff.css', __FILE__) );
   }
   add_action( 'wp_enqueue_scripts', 'mpw_team_scripts' );
 function team_list_display ( $atts , $content = null ) {
