@@ -37,4 +37,14 @@
     font-size: 1.5rem;
 }
 
-
+.staff-sidebar-member .staff-member-img {
+    max-width: 175px;
+}
+.staff-sidebar-member .staff-member-name {
+    margin: 1rem auto 0;
+}
+.staff-phone {
+    margin: 1rem 0;
+    font-size: 32px;
+    font-size: 2rem;
+}

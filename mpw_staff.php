@@ -18,14 +18,14 @@ function our_team_post_type() {
 		'name_admin_bar'        => __( 'Staff Member', 'mpw_team_post_type' ),
 		'archives'              => __( 'Staff Archives', 'mpw_team_post_type' ),
 		'parent_item_colon'     => __( 'Parent Item:', 'mpw_team_post_type' ),
-		'all_items'             => __( 'All Items', 'mpw_team_post_type' ),
+		'all_items'             => __( 'All Staff Members', 'mpw_team_post_type' ),
 		'add_new_item'          => __( 'Add New Staff Member', 'mpw_team_post_type' ),
 		'add_new'               => __( 'Add New', 'mpw_team_post_type' ),
-		'new_item'              => __( 'New Item', 'mpw_team_post_type' ),
-		'edit_item'             => __( 'Edit Item', 'mpw_team_post_type' ),
-		'update_item'           => __( 'Update Item', 'mpw_team_post_type' ),
-		'view_item'             => __( 'View Item', 'mpw_team_post_type' ),
-		'search_items'          => __( 'Search Item', 'mpw_team_post_type' ),
+		'new_item'              => __( 'New Staff Member', 'mpw_team_post_type' ),
+		'edit_item'             => __( 'Edit Staff Member', 'mpw_team_post_type' ),
+		'update_item'           => __( 'Update Staff Member', 'mpw_team_post_type' ),
+		'view_item'             => __( 'View Staff Member', 'mpw_team_post_type' ),
+		'search_items'          => __( 'Search Staff Member', 'mpw_team_post_type' ),
 		'not_found'             => __( 'Not found', 'mpw_team_post_type' ),
 		'not_found_in_trash'    => __( 'Not found in Trash', 'mpw_team_post_type' ),
 		'featured_image'        => __( 'Featured Image', 'mpw_team_post_type' ),
@@ -124,5 +124,61 @@ return do_shortcode( $cont );
 }
 
 add_shortcode( 'team-list', 'team_list_display' );
+
+function team_sidebar_contact_display ( $atts ) {
+	//global $wp_query;
+	//$glob_post_id = $wp_query->post->ID;
+	$glob_post_id = get_the_id();
+	$cats = wp_get_post_terms( $glob_post_id, 'category' );
+
+
+$args = array(
+	'post_type' => 'our_team',
+	'posts_per_page' => -1,
+	'order' 	=> 'ASC',
+	'orderby' 	=> 'menu_order',
+	'tax_query' => array(
+		array(
+			'taxonomy' => 'category',
+			'field'    => 'slug',
+			'terms'    => $cats[0]->slug,
+		),
+	),
+);
+$contact_query = new WP_Query( $args );
+
+// The Loop
+if ( $contact_query->have_posts() ) {
+	$cont .= '<div id="staff-sidebar-container">';
+	while ( $contact_query->have_posts() ) {
+		$contact_query->the_post();
+		$po_id = get_the_id();
+		if ( has_post_thumbnail() ) { // check if the post has a Post Thumbnail assigned to it.
+			$thumb_url = get_the_post_thumbnail_url();
+		}
+		$team_title = get_the_title();	
+		$position = get_post_meta( $po_id, "staff_position", true );
+		$email_address = get_post_meta( $po_id, "staff_email_address", true );
+		$phone_number = get_post_meta( $po_id, "staff_phone_number", true );
+
+		$cont .= '<div class="staff-member staff-sidebar-member">';
+		$cont .= '<div class="staff-member-img-container"><img class="staff-member-img" src="'.$thumb_url.'" /></div>';
+		$cont .= '<div class="staff-info"><h2 class="staff-member-name">'.$team_title.'</h2><span class="job-title">'.$position.'</span></div>';
+		$cont .= '<div class="staff-phone">'.$phone_number.'</div>';
+		$cont .= '<div class="staff-contact"><a href="mailto:'.antispambot($email_address).'"><i class="fa fa-envelope" aria-hidden="true"></i>Email '.$team_title.'</a></div>';
+		$cont .= '</div>';
+	}
+	$cont .= '</div>';
+
+} else {
+	// no posts found
+}
+/* Restore original Post Data */
+wp_reset_postdata();
+return do_shortcode( $cont );
+
+}
+
+add_shortcode( 'sidebar_contact', 'team_sidebar_contact_display' );
 
 ?>
