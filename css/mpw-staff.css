@@ -1,3 +1,6 @@
+#staff-container {    
+    justify-content: center; 
+}
 .staff-member {
     text-align: center;
     padding: 2rem;
