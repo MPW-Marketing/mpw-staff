@@ -122,7 +122,7 @@ if ( $the_query->have_posts() ) {
 		$position = get_post_meta( $po_id, "staff_position", true );
 		$email_address = get_post_meta( $po_id, "staff_email_address", true );	
 
-		$cont .= '<div class="staff-member pure-u-1-1 pure-u-sm-1-2 md-1-4">';
+		$cont .= '<div class="staff-member pure-u-1-1 pure-u-sm-1-2 pure-u-md-1-4">';
 		$cont .= '<div class="staff-member-img-container"><img class="staff-member-img" src="'.$thumb_url.'" /></div>';
 		$cont .= '<div class="staff-contact"><a href="mailto:'.antispambot($email_address).'"><i class="fa fa-envelope" aria-hidden="true"></i>Email '.$team_title.'</a></div>';
 		$cont .= '<div class="staff-info"><h2 class="staff-member-name">'.$team_title.'</h2><span class="job-title">'.$position.'</span></div>';
